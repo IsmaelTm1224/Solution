@@ -81,14 +81,12 @@
         <button onclick="calculate()" class="bg-green-500 text-white p-4 rounded-xl text-xl font-bold hover:bg-green-600 transition-colors duration-200 btn-animate">=</button>
       </div>
 
-      <!-- Botón mostrar creadores -->
       <div class="mt-6">
         <button onclick="mostrarCreadores()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-xl font-semibold btn-animate">
           Mostrar nombres de los creadores
         </button>
       </div>
 
-      <!-- Nombres ocultos -->
       <div id="creadores" class="mt-4 text-white text-center hidden fade">
         <p class="text-lg font-semibold">Creadores:</p>
         <p>Jery Caba</p>
@@ -115,7 +113,7 @@
 
     function updateDisplay() {
       display.value = currentInput;
-      previousOperation.textContent = previousInput;
+      previousOperation.textContent = operation ? `${previousInput} ${operation}` : '';
     }
 
     function appendToDisplay(value) {
@@ -145,15 +143,17 @@
     }
 
     function setOperation(op) {
-      if (operation !== '') calculate();
-      previousInput = currentInput + ' ' + op;
+      if (operation && !resetScreen) {
+        calculate();
+      }
       operation = op;
-      currentInput = '0';
+      previousInput = currentInput;
+      resetScreen = true;
       updateDisplay();
     }
 
     function calculate() {
-      const prev = parseFloat(previousInput.split(' ')[0]);
+      const prev = parseFloat(previousInput);
       const current = parseFloat(currentInput);
       if (isNaN(prev) || isNaN(current)) return;
 
